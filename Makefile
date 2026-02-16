@@ -4,6 +4,7 @@ CC	=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
 
 SRC	=	main.c \
+		src/server.c
 
 
 OBJ	=	$(SRC:.c=.o)
