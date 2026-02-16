@@ -1,10 +1,19 @@
+##
+## EPITECH PROJECT, 2026
+## FTP
+## File description:
+## Makefile
+##
+
+
 NAME	=	myftp
 
 CC	=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
 
 SRC	=	main.c \
-		src/server.c
+		src/server.c \
+		src/helpers.c
 
 
 OBJ	=	$(SRC:.c=.o)
@@ -21,4 +30,3 @@ fclean:	clean
 	rm -f $(NAME)
 
 re:	fclean all
-
