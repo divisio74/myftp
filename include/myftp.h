@@ -35,5 +35,6 @@ typedef struct server_s {
 
 void start_server(int port, char *path);
 int print_help(int argc, char *argv[]);
+server_t server_init(int port, char *path);
 
 #endif
