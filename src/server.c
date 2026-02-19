@@ -23,9 +23,7 @@ void start_server(int port, char *path)
         perror("Setsockopt failling for re-use");
         return;
     }
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
-    addr.sin_addr.s_addr = INADDR_ANY;
+    addr = init_sockaddr(port);
     if (bind(server.socket, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
         perror("Issue with server binding");
         return;
@@ -49,4 +47,14 @@ server_t server_init(int port, char *path)
     strcpy(server.path, path);
     server.isalive = 1;
     return server;
+}
+
+struct sockaddr_in init_sockaddr(int port)
+{
+    struct sockaddr_in addr;
+
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+    return addr;
 }
