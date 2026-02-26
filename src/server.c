@@ -11,22 +11,31 @@
 
 void start_server(int port, char *path)
 {
-    server_t server;
-    struct sockaddr_in addr;
-    int opt = 1;
+    server_t server = server_init(port, path);
 
-    server = server_init(port, path);
-    if (server.isalive == 0)
+    if (server.isalive == 0 || bind_server(&server, port) == 0)
         return;
-    if (setsockopt(server.socket, SOL_SOCKET,
-            SO_REUSEADDR, &opt, sizeof(int)) == -1) {
-        perror("Setsockopt failling for re-use");
-        return;
+    server_loop(&server);
+}
+
+void handle_all(server_t *server)
+{
+    for (int i = 0; i < server->nb_client; i++) {
+        if (check_client(server, i) == 1)
+            i--;
     }
-    addr = init_sockaddr(port);
-    if (bind(server.socket, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
-        perror("Issue with server binding");
-        return;
+}
+
+void server_loop(server_t *server)
+{
+    server->pollfds[0].fd = server->socket;
+    server->pollfds[0].events = POLLIN;
+    while (server->isalive) {
+        if (poll(server->pollfds, server->nb_client + 1, -1) == -1)
+            break;
+        if (server->pollfds[0].revents & POLLIN)
+            accept_client(server);
+        handle_all(server);
     }
 }
 

@@ -13,7 +13,9 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 SRC	=	main.c \
 		src/server.c \
-		src/helpers.c
+		src/client.c \
+		src/helpers.c \
+		src/server_helpers.c
 
 
 OBJ	=	$(SRC:.c=.o)

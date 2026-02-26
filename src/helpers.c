@@ -19,3 +19,15 @@ int print_help(int argc, char *argv[])
     }
     return 0;
 }
+
+void extract_line(client_t *client, char *out, int max, int i)
+{
+    int line_len = i < max - 1 ? i : max - 1;
+    int j = 0;
+
+    for (j = 0; j < line_len; j++)
+        out[j] = client->commandbuffer[(client->buf_start + j) % BUFSIZE];
+    out[line_len] = '\0';
+    client->buf_start = (client->buf_start + i + 2) % BUFSIZE;
+    client->buf_len -= i + 2;
+}
