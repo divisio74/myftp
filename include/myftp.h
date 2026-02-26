@@ -14,6 +14,7 @@
     #include <stdlib.h>
     #include <unistd.h>
     #include <sys/stat.h>
+    #include <ctype.h>
 
     #define BUFSIZE 4096
 
@@ -26,6 +27,10 @@ typedef struct client_s {
     char databuffer[4096];
     int login;
     char path[4096];
+    char username[256];
+    int pasv_mode;
+    unsigned int data_ip;
+    unsigned short data_port;
 } client_t;
 
 typedef struct server_s {
@@ -52,5 +57,11 @@ void extract_line(client_t *client, char *out, int max, int i);
 void handle_all(server_t *server);
 int check_client(server_t *server, int i);
 int bind_server(server_t *server, int port);
+int is_within_root(const char *root, const char *path);
+int dispatch_command(server_t *server, int idx, char *line);
+int log_command(server_t *server, int idx, char *cmd, char *arg);
+int unlog_command(server_t *server, int idx, char *cmd, char *arg);
+void parse_cmd(char *line, char *cmd, char **arg);
+int is_login(client_t *client);
 
 #endif

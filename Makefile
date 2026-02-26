@@ -15,7 +15,8 @@ SRC	=	main.c \
 		src/server.c \
 		src/client.c \
 		src/helpers.c \
-		src/server_helpers.c
+		src/server_helpers.c \
+		src/commands/parsing.c
 
 
 OBJ	=	$(SRC:.c=.o)

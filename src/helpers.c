@@ -31,3 +31,16 @@ void extract_line(client_t *client, char *out, int max, int i)
     client->buf_start = (client->buf_start + i + 2) % BUFSIZE;
     client->buf_len -= i + 2;
 }
+
+int is_within_root(const char *root, const char *path)
+{
+    size_t len = strlen(root);
+
+    if (strncmp(path, root, len) != 0)
+        return 0;
+    if (path[len] == '\0')
+        return 1;
+    if (path[len] == '/')
+        return 1;
+    return 0;
+}

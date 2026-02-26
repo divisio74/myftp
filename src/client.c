@@ -78,7 +78,8 @@ int handle_client(server_t *server, int idx)
     }
     buf_push(client, tmpbuffer, bytes);
     while (buf_pop_line(client, line, BUFSIZE)) {
-        dprintf(client->socket, "500 Unknown command.\r\n");
+        if (dispatch_command(server, idx, line) == 1)
+            return 1;
     }
     return 0;
 }
