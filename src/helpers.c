@@ -7,6 +7,15 @@
 
 #include "../include/myftp.h"
 
+int verif_arg(char *arg, client_t *client)
+{
+    if (!arg) {
+        dprintf(client->socket, "501 Syntax error in arguments.\r\n");
+        return 1;
+    }
+    return 0;
+}
+
 int print_help(int argc, char *argv[])
 {
     if (argc == 2) {

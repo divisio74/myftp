@@ -29,10 +29,8 @@ int cmd_port(server_t *server, int idx, char *arg)
 {
     client_t *client = &server->client_list[idx];
 
-    if (!arg) {
-        dprintf(client->socket, "501 Syntax error in arguments.\r\n");
+    if (verif_arg(arg, client) == 1)
         return 0;
-    }
     if (cmd_port_parsing(client, arg) == 1)
         return 0;
     client->pasv_mode = 0;

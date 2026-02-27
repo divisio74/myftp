@@ -19,6 +19,7 @@
     #include <netinet/in.h>
     #include <arpa/inet.h>
     #include <dirent.h>
+    #include <fcntl.h>
 
     #define BUFSIZE 4096
 
@@ -49,6 +50,7 @@ typedef struct server_s {
 
 void start_server(int port, char *path);
 int print_help(int argc, char *argv[]);
+int verif_arg(char *arg, client_t *client);
 server_t server_init(int port, char *path);
 struct sockaddr_in init_sockaddr(int port);
 void server_loop(server_t *server);
@@ -70,11 +72,20 @@ int is_login(client_t *client);
 int cmd_user(server_t *server, int idx, char *arg);
 int cmd_pass(server_t *server, int idx, char *arg);
 int cmd_cwd(server_t *server, int idx, char *arg);
+int cwd_checkers(server_t *server, client_t *client, char *newpath);
 int cmd_pwd(server_t *server, int idx, char *arg);
 int cmd_quit(server_t *server, int idx, char *arg);
 int cmd_help(server_t *server, int idx, char *arg);
 int cmd_pasv(server_t *server, int idx, char *arg);
 int cmd_pasv_socket(client_t *client);
 void send_pasv_response(client_t *client, int data_fd);
+int cmd_port_parsing(client_t *client, char *arg);
+int cmd_port(server_t *server, int idx, char *arg);
+int retr_checkers(server_t *server, client_t *client, char *newpath);
+int open_data_connection(client_t *client);
+int open_retr_file(server_t *server, client_t *client, char *arg,
+    char *newpath);
+void transfer_file(int file_fd, int data_fd, client_t *client);
+int cmd_retr(server_t *server, int idx, char *arg);
 
 #endif
