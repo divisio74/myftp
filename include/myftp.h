@@ -63,5 +63,11 @@ int log_command(server_t *server, int idx, char *cmd, char *arg);
 int unlog_command(server_t *server, int idx, char *cmd, char *arg);
 void parse_cmd(char *line, char *cmd, char **arg);
 int is_login(client_t *client);
+int cmd_user(server_t *server, int idx, char *arg);
+int cmd_pass(server_t *server, int idx, char *arg);
+int cmd_cwd(server_t *server, int idx, char *arg);
+int cmd_pwd(server_t *server, int idx, char *arg);
+int cmd_quit(server_t *server, int idx, char *arg);
+int cmd_help(server_t *server, int idx, char *arg);
 
 #endif

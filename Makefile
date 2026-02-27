@@ -16,7 +16,10 @@ SRC	=	main.c \
 		src/client.c \
 		src/helpers.c \
 		src/server_helpers.c \
-		src/commands/parsing.c
+		src/commands/parsing.c \
+		src/commands/dir.c \
+		src/commands/simple.c \
+		src/commands/auth.c
 
 
 OBJ	=	$(SRC:.c=.o)
