@@ -71,7 +71,7 @@ int handle_client(server_t *server, int idx)
     char line[BUFSIZE];
     int bytes;
 
-    bytes = recv(client->socket, tmpbuffer, BUFSIZE - 1, 0);
+    bytes = read(client->socket, tmpbuffer, BUFSIZE - 1);
     if (bytes <= 0) {
         remove_client(server, idx);
         return 1;

@@ -26,12 +26,12 @@ int cmd_pwd(server_t *server, int idx, char *arg)
 {
     client_t *client = &server->client_list[idx];
     char *virtual_path = client->path + strlen(server->path);
-    (void)arg;
 
+    (void)arg;
     if (virtual_path[0] == '\0')
         virtual_path = "/";
     dprintf(client->socket, "257 \"%s\" is current directory.\r\n",
-            virtual_path);
+        virtual_path);
     return 0;
 }
 
@@ -44,11 +44,10 @@ int cmd_cwd(server_t *server, int idx, char *arg)
         dprintf(client->socket, "501 Syntax error in arguments.\r\n");
         return 0;
     }
-    if (arg[0] == '/') {
+    if (arg[0] == '/')
         snprintf(newpath, BUFSIZE * 2, "%s%s", server->path, arg);
-    } else {
+    else
         snprintf(newpath, BUFSIZE * 2, "%s/%s", client->path, arg);
-    }
     if (strlen(newpath) >= BUFSIZE) {
         dprintf(client->socket, "550 Path too long.\r\n");
         return 0;

@@ -19,7 +19,8 @@ SRC	=	main.c \
 		src/commands/parsing.c \
 		src/commands/dir.c \
 		src/commands/simple.c \
-		src/commands/auth.c
+		src/commands/auth.c \
+		src/commands/pasv.c
 
 
 OBJ	=	$(SRC:.c=.o)

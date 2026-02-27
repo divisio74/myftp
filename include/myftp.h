@@ -15,6 +15,10 @@
     #include <unistd.h>
     #include <sys/stat.h>
     #include <ctype.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+    #include <dirent.h>
 
     #define BUFSIZE 4096
 
@@ -69,5 +73,8 @@ int cmd_cwd(server_t *server, int idx, char *arg);
 int cmd_pwd(server_t *server, int idx, char *arg);
 int cmd_quit(server_t *server, int idx, char *arg);
 int cmd_help(server_t *server, int idx, char *arg);
+int cmd_pasv(server_t *server, int idx, char *arg);
+int cmd_pasv_socket(client_t *client);
+void send_pasv_response(client_t *client, int data_fd);
 
 #endif
