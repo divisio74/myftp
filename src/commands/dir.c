@@ -56,3 +56,17 @@ int cmd_cwd(server_t *server, int idx, char *arg)
     dprintf(client->socket, "250 Directory successfully changed.\r\n");
     return 0;
 }
+
+int cmd_cdup(server_t *server, int idx, char *arg)
+{
+    client_t *client = &server->client_list[idx];
+    char newpath[BUFSIZE * 2];
+
+    (void)arg;
+    snprintf(newpath, BUFSIZE * 2, "%s/..", client->path);
+    if (cwd_checkers(server, client, newpath) != 1)
+        return 0;
+    strcpy(client->path, newpath);
+    dprintf(client->socket, "200 Directory successfully changed.\r\n");
+    return 0;
+}

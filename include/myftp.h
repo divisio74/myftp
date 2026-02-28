@@ -72,6 +72,7 @@ int is_login(client_t *client);
 int cmd_user(server_t *server, int idx, char *arg);
 int cmd_pass(server_t *server, int idx, char *arg);
 int cmd_cwd(server_t *server, int idx, char *arg);
+int cmd_cdup(server_t *server, int idx, char *arg);
 int cwd_checkers(server_t *server, client_t *client, char *newpath);
 int cmd_pwd(server_t *server, int idx, char *arg);
 int cmd_quit(server_t *server, int idx, char *arg);
@@ -95,5 +96,7 @@ int cmd_stor(server_t *server, int idx, char *arg);
 DIR *cmd_list_dir(client_t *client);
 int cmd_list_datafd(client_t *client, DIR *dir);
 int cmd_list(server_t *server, int idx, char *arg);
+int cmd_dele(server_t *server, int idx, char *arg);
+int cmd_noop(server_t *server, int idx, char *arg);
 
 #endif
