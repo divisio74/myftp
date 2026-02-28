@@ -20,7 +20,8 @@ SRC	=	main.c \
 		src/commands/dir.c \
 		src/commands/simple.c \
 		src/commands/auth.c \
-		rc/commands/retr.c \
+		src/commands/retr.c \
+		src/commands/stor.c \
 		src/commands/pasv.c
 
 
