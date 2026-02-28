@@ -23,7 +23,8 @@ SRC	=	main.c \
 		src/commands/retr.c \
 		src/commands/stor.c \
 		src/commands/list.c \
-		src/commands/pasv.c
+		src/commands/pasv.c \
+		src/commands/port.c
 
 
 OBJ	=	$(SRC:.c=.o)

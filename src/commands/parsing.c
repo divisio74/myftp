@@ -56,6 +56,46 @@ int log_command(server_t *server, int idx, char *cmd, char *arg)
             return 0;
         return cmd_cwd(server, idx, arg);
     }
+    if (strcmp(cmd, "PASV") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_pasv(server, idx, arg);
+    }
+    if (strcmp(cmd, "STOR") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_stor(server, idx, arg);
+    }
+    if (strcmp(cmd, "RETR") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_retr(server, idx, arg);
+    }
+    if (strcmp(cmd, "PORT") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_port(server, idx, arg);
+    }
+    if (strcmp(cmd, "NOOP") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_noop(server, idx, arg);
+    }
+    if (strcmp(cmd, "DELE") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_dele(server, idx, arg);
+    }
+    if (strcmp(cmd, "LIST") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_list(server, idx, arg);
+    }
+    if (strcmp(cmd, "CDUP") == 0) {
+        if (is_login(client) == 0)
+            return 0;
+        return cmd_cdup(server, idx, arg);
+    }
     return -1;
 }
 
