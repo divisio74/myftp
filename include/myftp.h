@@ -92,5 +92,8 @@ int open_stor_file(server_t *server, client_t *client, char *arg,
     char *newpath);
 void transfer_file_stor(int file_fd, int data_fd, client_t *client);
 int cmd_stor(server_t *server, int idx, char *arg);
+DIR *cmd_list_dir(client_t *client);
+int cmd_list_datafd(client_t *client, DIR *dir);
+int cmd_list(server_t *server, int idx, char *arg);
 
 #endif

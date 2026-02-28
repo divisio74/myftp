@@ -22,6 +22,7 @@ SRC	=	main.c \
 		src/commands/auth.c \
 		src/commands/retr.c \
 		src/commands/stor.c \
+		src/commands/list.c \
 		src/commands/pasv.c
 
 
