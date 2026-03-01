@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2026
 ** FTP
 ** File description:
-** server
+** server.c
 */
 
 #include "../include/myftp.h"
@@ -11,11 +11,17 @@
 
 void start_server(int port, char *path)
 {
-    server_t server = server_init(port, path);
+    server_t *server = malloc(sizeof(server_t));
 
-    if (server.isalive == 0 || bind_server(&server, port) == 0)
+    if (!server)
         return;
-    server_loop(&server);
+    server_init(server, port, path);
+    if (server->isalive == 0 || bind_server(server, port) == 0) {
+        free(server);
+        return;
+    }
+    server_loop(server);
+    free(server);
 }
 
 void handle_all(server_t *server)
@@ -39,23 +45,21 @@ void server_loop(server_t *server)
     }
 }
 
-server_t server_init(int port, char *path)
+void server_init(server_t *server, int port, char *path)
 {
-    server_t server;
     int sfd;
 
-    memset(&server, 0, sizeof(server_t));
+    memset(server, 0, sizeof(server_t));
     sfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sfd == -1) {
-        server.isalive = 0;
+        server->isalive = 0;
         perror("error when server init");
-        return server;
+        return;
     }
-    server.port = port;
-    server.socket = sfd;
-    strcpy(server.path, path);
-    server.isalive = 1;
-    return server;
+    server->port = port;
+    server->socket = sfd;
+    strcpy(server->path, path);
+    server->isalive = 1;
 }
 
 struct sockaddr_in init_sockaddr(int port)

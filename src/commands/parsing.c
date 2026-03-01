@@ -7,28 +7,6 @@
 
 #include "../../include/myftp.h"
 
-void parse_cmd(char *line, char *cmd, char **arg)
-{
-    int i = 0;
-
-    while (line[i] != '\0' && line[i] != ' ') {
-        cmd[i] = toupper(line[i]);
-        i++;
-    }
-    cmd[i] = '\0';
-    if (line[i] == ' ' && line[i + 1] != '\0')
-        *arg = line + i + 1;
-}
-
-int is_login(client_t *client)
-{
-    if (!client->login) {
-        dprintf(client->socket, "530 Not logged in.\r\n");
-        return 0;
-    }
-    return 1;
-}
-
 int unlog_command(server_t *server, int idx, char *cmd, char *arg)
 {
     if (strcmp(cmd, "USER") == 0)
@@ -42,61 +20,51 @@ int unlog_command(server_t *server, int idx, char *cmd, char *arg)
     return -1;
 }
 
+int exec_log_cmd_advanced(server_t *server, int idx, char *arg, int cmd_idx)
+{
+    if (cmd_idx == 3)
+        return cmd_pasv(server, idx, arg);
+    if (cmd_idx == 4)
+        return cmd_port(server, idx, arg);
+    if (cmd_idx == 6)
+        return cmd_retr(server, idx, arg);
+    if (cmd_idx == 7)
+        return cmd_stor(server, idx, arg);
+    if (cmd_idx == 9)
+        return cmd_dele(server, idx, arg);
+    return -1;
+}
+
+int exec_log_cmd(server_t *server, int idx, char *arg, int cmd_idx)
+{
+    int advanced_cmd;
+
+    if (cmd_idx == 0)
+        return cmd_pwd(server, idx, arg);
+    if (cmd_idx == 1)
+        return cmd_cwd(server, idx, arg);
+    if (cmd_idx == 2)
+        return cmd_cdup(server, idx, arg);
+    if (cmd_idx == 5)
+        return cmd_list(server, idx, arg);
+    if (cmd_idx == 8)
+        return cmd_noop(server, idx, arg);
+    advanced_cmd = exec_log_cmd_advanced(server, idx, arg, cmd_idx);
+    if (advanced_cmd != -1)
+        return advanced_cmd;
+    return -1;
+}
+
 int log_command(server_t *server, int idx, char *cmd, char *arg)
 {
     client_t *client = &server->client_list[idx];
+    int cmd_idx = get_log_cmd_idx(cmd);
 
-    if (strcmp(cmd, "PWD") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_pwd(server, idx, arg);
-    }
-    if (strcmp(cmd, "CWD") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_cwd(server, idx, arg);
-    }
-    if (strcmp(cmd, "PASV") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_pasv(server, idx, arg);
-    }
-    if (strcmp(cmd, "STOR") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_stor(server, idx, arg);
-    }
-    if (strcmp(cmd, "RETR") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_retr(server, idx, arg);
-    }
-    if (strcmp(cmd, "PORT") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_port(server, idx, arg);
-    }
-    if (strcmp(cmd, "NOOP") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_noop(server, idx, arg);
-    }
-    if (strcmp(cmd, "DELE") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_dele(server, idx, arg);
-    }
-    if (strcmp(cmd, "LIST") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_list(server, idx, arg);
-    }
-    if (strcmp(cmd, "CDUP") == 0) {
-        if (is_login(client) == 0)
-            return 0;
-        return cmd_cdup(server, idx, arg);
-    }
-    return -1;
+    if (cmd_idx == -1)
+        return -1;
+    if (is_login(client) == 0)
+        return 0;
+    return exec_log_cmd(server, idx, arg, cmd_idx);
 }
 
 int dispatch_command(server_t *server, int idx, char *line)

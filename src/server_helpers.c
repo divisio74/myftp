@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2026
 ** FTP
 ** File description:
-** server
+** server_helpers.c
 */
 
 #include "../include/myftp.h"

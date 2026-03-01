@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2026
 ** FTP
 ** File description:
-** myftp
+** myftp.h
 */
 
 #ifndef INCLUDED_MYFTP_H
@@ -51,7 +51,7 @@ typedef struct server_s {
 void start_server(int port, char *path);
 int print_help(int argc, char *argv[]);
 int verif_arg(char *arg, client_t *client);
-server_t server_init(int port, char *path);
+void server_init(server_t *server, int port, char *path);
 struct sockaddr_in init_sockaddr(int port);
 void server_loop(server_t *server);
 void accept_client(server_t *server);
@@ -98,5 +98,8 @@ int cmd_list_datafd(client_t *client, DIR *dir);
 int cmd_list(server_t *server, int idx, char *arg);
 int cmd_dele(server_t *server, int idx, char *arg);
 int cmd_noop(server_t *server, int idx, char *arg);
+int get_log_cmd_idx(char *cmd);
+int exec_log_cmd(server_t *server, int idx, char *arg, int cmd_idx);
+int exec_log_cmd_advanced(server_t *server, int idx, char *arg, int cmd_idx);
 
 #endif

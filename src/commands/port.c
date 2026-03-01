@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2026
 ** FTP
 ** File description:
-** transfert
+** port.c
 */
 
 #include "../../include/myftp.h"

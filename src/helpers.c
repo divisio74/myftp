@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2026
 ** FTP
 ** File description:
-** helpers
+** helpers.c
 */
 
 #include "../include/myftp.h"
@@ -52,4 +52,13 @@ int is_within_root(const char *root, const char *path)
     if (path[len] == '/')
         return 1;
     return 0;
+}
+
+int is_login(client_t *client)
+{
+    if (!client->login) {
+        dprintf(client->socket, "530 Not logged in.\r\n");
+        return 0;
+    }
+    return 1;
 }

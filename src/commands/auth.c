@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2026
 ** FTP
 ** File description:
-** parsing.c
+** auth.c
 */
 
 #include "../../include/myftp.h"
@@ -26,10 +26,7 @@ int cmd_pass(server_t *server, int idx, char *arg)
 {
     client_t *client = &server->client_list[idx];
 
-    if (!arg) {
-        dprintf(client->socket, "501 Syntax error in arguments.\r\n");
-        return 0;
-    }
+    (void)arg;
     if (client->username[0] == '\0') {
         dprintf(client->socket, "503 Bad sequence of commands.\r\n");
         return 0;

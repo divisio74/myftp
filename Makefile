@@ -24,6 +24,7 @@ SRC	=	main.c \
 		src/commands/stor.c \
 		src/commands/list.c \
 		src/commands/pasv.c \
+		src/commands/parsing_help.c \
 		src/commands/port.c
 
 
