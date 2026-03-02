@@ -48,28 +48,6 @@ int open_data_connection(client_t *client)
         return -1;
     }
     return fd;
-}int open_data_connection(client_t *client)
-{
-    int fd;
-    struct sockaddr_in addr;
-
-    if (client->pasv_mode) {
-        fd = accept(client->socket2, NULL, NULL);
-        close(client->socket2);
-        client->socket2 = -1;
-        return fd;
-    }
-    fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (fd == -1)
-        return -1;
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = client->data_ip;
-    addr.sin_port = client->data_port;
-    if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
-        close(fd);
-        return -1;
-    }
-    return fd;
 }
 
 int open_retr_file(server_t *server, client_t *client, char *arg,
