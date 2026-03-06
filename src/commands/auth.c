@@ -31,7 +31,7 @@ int cmd_pass(server_t *server, int idx, char *arg)
         dprintf(client->socket, "503 Bad sequence of commands.\r\n");
         return 0;
     }
-    if (strcmp(client->username, "anonymous") == 0) {
+    if (strcasecmp(client->username, "anonymous") == 0) {
         dprintf(client->socket, "230 User logged in, proceed.\r\n");
         client->login = 1;
         return 0;
