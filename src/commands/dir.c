@@ -42,17 +42,21 @@ int cmd_pwd(server_t *server, int idx, char *arg)
 int cmd_cwd(server_t *server, int idx, char *arg)
 {
     client_t *client = &server->client_list[idx];
-    char newpath[BUFSIZE * 2];
+    int len_np = BUFSIZE * 2;
+    char newpath[len_np];
+    char resolved[BUFSIZE];
 
     if (verif_arg(arg, client) == 1)
         return 0;
     if (arg[0] == '/')
-        snprintf(newpath, BUFSIZE * 2, "%s%s", server->path, arg);
+        snprintf(newpath, len_np, "%s%s", server->path, arg);
     else
-        snprintf(newpath, BUFSIZE * 2, "%s/%s", client->path, arg);
+        snprintf(newpath, len_np, "%s/%s", client->path, arg);
     if (cwd_checkers(server, client, newpath) != 1)
         return 0;
-    strcpy(client->path, newpath);
+    if (realpath(newpath, resolved) == NULL)
+        return 0;
+    strcpy(client->path, resolved);
     dprintf(client->socket, "250 Directory successfully changed.\r\n");
     return 0;
 }
@@ -60,13 +64,17 @@ int cmd_cwd(server_t *server, int idx, char *arg)
 int cmd_cdup(server_t *server, int idx, char *arg)
 {
     client_t *client = &server->client_list[idx];
-    char newpath[BUFSIZE * 2];
+    int len_np = BUFSIZE * 2;
+    char newpath[len_np];
+    char resolved[BUFSIZE];
 
     (void)arg;
-    snprintf(newpath, BUFSIZE * 2, "%s/..", client->path);
+    snprintf(newpath, len_np, "%s/..", client->path);
     if (cwd_checkers(server, client, newpath) != 1)
         return 0;
-    strcpy(client->path, newpath);
+    if (realpath(newpath, resolved) == NULL)
+        return 0;
+    strcpy(client->path, resolved);
     dprintf(client->socket, "200 Directory successfully changed.\r\n");
     return 0;
 }

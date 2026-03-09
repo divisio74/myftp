@@ -23,6 +23,10 @@ int retr_checkers(server_t *server, client_t *client, char *newpath)
         dprintf(client->socket, "550 Permission denied.\r\n");
         return 0;
     }
+    if (access(newpath, R_OK) != 0) {
+        dprintf(client->socket, "550 Permission denied.\r\n");
+        return 0;
+    }
     return 1;
 }
 
